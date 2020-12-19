@@ -1,12 +1,6 @@
-import { DynamoDBClient, ListTablesCommand } from "@aws-sdk/client-dynamodb";
+import { createTable } from "./createTable";
+import { listTables } from "./listTables";
 
-(async () => {
-  const client = new DynamoDBClient({ region: "us-west-2" });
-  const command = new ListTablesCommand({});
-  try {
-    const results = await client.send(command);
-    console.log(results.TableNames.join("\n"));
-  } catch (err) {
-    console.error(err);
-  }
-})();
+createTable().then(async () => {
+  await listTables();
+});
