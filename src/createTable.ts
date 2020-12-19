@@ -1,6 +1,6 @@
 import { CreateTableCommand } from "@aws-sdk/client-dynamodb";
 
-import { dbclient } from "./dynamoClient";
+import { dbclient } from "~/dynamoClient";
 
 // Set the parameters
 const params = {
@@ -39,6 +39,10 @@ export async function createTable() {
     const data = await dbclient.send(new CreateTableCommand(params));
     console.log("Table Created", data);
   } catch (err) {
-    console.log("Error", err);
+    if (err.name === "ResourceInUseException") {
+      console.log("Table already exists");
+    } else {
+      console.log("Error", err);
+    }
   }
 }

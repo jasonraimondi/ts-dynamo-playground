@@ -1,6 +1,6 @@
 import { ListTablesCommand } from "@aws-sdk/client-dynamodb";
 
-import { dbclient } from "./dynamoClient";
+import { dbclient } from "~/dynamoClient";
 
 export async function listTables() {
   try {
