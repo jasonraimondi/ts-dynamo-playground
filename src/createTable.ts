@@ -1,37 +1,105 @@
 import { CreateTableCommand } from "@aws-sdk/client-dynamodb";
 
-import { dbclient } from "~/dynamoClient";
+import { dbclient } from "~/dynamo";
 
 // Set the parameters
 const params = {
+  TableName: process.env.TABLE_NAME,
   AttributeDefinitions: [
     {
-      AttributeName: "Season", //ATTRIBUTE_NAME_1
-      AttributeType: "N", //ATTRIBUTE_TYPE
+      AttributeName: "PK",
+      AttributeType: "S",
     },
     {
-      AttributeName: "Episode", //ATTRIBUTE_NAME_2
-      AttributeType: "N", //ATTRIBUTE_TYPE
+      AttributeName: "SK",
+      AttributeType: "S",
+    },
+    {
+      AttributeName: "GSI1PK",
+      AttributeType: "S",
+    },
+    {
+      AttributeName: "GSI1SK",
+      AttributeType: "S",
+    },
+    {
+      AttributeName: "GSI2PK",
+      AttributeType: "S",
+    },
+    {
+      AttributeName: "GSI2SK",
+      AttributeType: "S",
+    },
+    {
+      AttributeName: "GSI3PK",
+      AttributeType: "S",
+    },
+    {
+      AttributeName: "GSI3SK",
+      AttributeType: "S",
     },
   ],
   KeySchema: [
     {
-      AttributeName: "Season", //ATTRIBUTE_NAME_1
+      AttributeName: "PK",
       KeyType: "HASH",
     },
     {
-      AttributeName: "Episode", //ATTRIBUTE_NAME_2
-      KeyType: "RANGE",
+      AttributeName: "SK",
+      KeyType: "RANGE"
     },
   ],
-  ProvisionedThroughput: {
-    ReadCapacityUnits: 1,
-    WriteCapacityUnits: 1,
-  },
-  TableName: "TABLE_NAME", //TABLE_NAME
-  StreamSpecification: {
-    StreamEnabled: false,
-  },
+  BillingMode: "PAY_PER_REQUEST",
+  GlobalSecondaryIndexes: [
+    {
+      IndexName: "GSI1",
+      KeySchema: [
+        {
+          AttributeName: "GSI1PK",
+          KeyType: "HASH",
+        },
+        {
+          AttributeName: "GSI1SK",
+          KeyType: "RANGE",
+        },
+      ],
+      Projection: {
+        ProjectionType: "ALL",
+      }
+    },
+    {
+      IndexName: "GSI2",
+      KeySchema: [
+        {
+          AttributeName: "GSI2PK",
+          KeyType: "HASH",
+        },
+        {
+          AttributeName: "GSI2SK",
+          KeyType: "RANGE",
+        },
+      ],
+      Projection: {
+        ProjectionType: "ALL",
+      }
+    },
+    {
+      IndexName: "GSI3",
+      KeySchema: [
+        {
+          AttributeName: "GSI3PK",
+          KeyType: "HASH",
+        },
+        {
+          AttributeName: "GSI3SK",
+          KeyType: "RANGE",
+        },
+      ],
+      Projection: {
+        ProjectionType: "ALL",
+      }
+    },
+  ],
 };
 
 export async function createTable() {
