@@ -5,7 +5,7 @@ import { User } from "~/user/user";
 
 export async function createUser(...users: User[]) {
   for (const user of users) {
-    await create(user);
+    await create(user).catch(console.log);
   }
 }
 

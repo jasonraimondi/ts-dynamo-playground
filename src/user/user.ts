@@ -14,11 +14,15 @@ export class User {
     this.createdAt = createdAt;
   }
 
-  key() {
+  static id(username: string) {
     return {
-      "PK": { "S": `ACCOUNT#${this.username.toLowerCase()}` },
-      "SK": { "S": `ACCOUNT#${this.username.toLowerCase()}` },
+      "PK": { "S": `ACCOUNT#${username.toLowerCase()}` },
+      "SK": { "S": `ACCOUNT#${username.toLowerCase()}` },
     };
+  }
+
+  key() {
+    return User.id(this.username);
   }
 
   gsi3pk() {
