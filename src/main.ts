@@ -12,9 +12,11 @@ import { getOAuthClient } from "~/oauth/getOAuthClient";
 const sleep = (s) => new Promise(resolve => setTimeout(resolve, s * 1000));
 
 (async () => {
-  // await createTable();
-  // console.log("sleeping...")
-  // await sleep(20);
+  await createTable();
+  console.log("sleeping...");
+  setInterval(() => console.log("foo"), 1000)
+
+  await sleep(20);
 
   await createUser(
     new User({ email: "jason@examaple.com", username: "jasonraimondi", name: "Jason Raimondi" }),
@@ -27,11 +29,23 @@ const sleep = (s) => new Promise(resolve => setTimeout(resolve, s * 1000));
 
   await sleep(5);
 
-  const start = Date.now();
+  let start = Date.now();
   console.log(await getUser("jasonraimondi"));
-  console.log(`MS: ${Date.now() - start}, S: ${(Date.now() - start) / 1000}`)
+  console.log(`MS: ${Date.now() - start}`)
+
+  start = Date.now();
   console.log(await getUser("kimberlyraimondi"));
+  console.log(`MS: ${Date.now() - start}`)
+
+  start = Date.now();
   console.log(await getOAuthClient("abc123"));
+  console.log(`MS: ${Date.now() - start}`)
+
+  start = Date.now();
   console.log(await getOAuthClient("doesnotexist"));
+  console.log(`MS: ${Date.now() - start}`)
+
+  start = Date.now();
   console.log(await getUser("doesnotexist"));
+  console.log(`MS: ${Date.now() - start}`)
 })();
