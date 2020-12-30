@@ -50,9 +50,7 @@ export class User {
   }
 }
 
-export const userFromItem = (item) => {
-  // It's possible we could retrieve an Organization by accident due to similar key structure.
-  // This will prevent us from returning an Organization as a User
+export const userFromItem = (item): User => {
   if (item.Type.S !== "User") {
     throw new Error("Not a user.");
   }

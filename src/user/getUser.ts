@@ -1,9 +1,10 @@
-import { GetItemCommand, PutItemCommand } from "@aws-sdk/client-dynamodb";
+import { GetItemCommand } from "@aws-sdk/client-dynamodb";
 
 import { dbclient } from "~/dynamo";
-import { User, userFromItem } from "~/user/user";
+import { User, userFromItem } from "~/user/User";
+import { DynamoResponse } from "~/user/createUser";
 
-export async function getUser(username: string): Promise<{ user: User } | { error: string }> {
+export async function getUser(username: string): Promise<DynamoResponse<User>> {
   try {
     const resp = await dbclient.send(new GetItemCommand({
       TableName: process.env.TABLE_NAME,
@@ -11,18 +12,16 @@ export async function getUser(username: string): Promise<{ user: User } | { erro
     }));
 
     if (!resp.Item) {
-      return {
-        error: 'User does not exist.'
-      }
+      return { error: `User does not exist <${username}>` };
     }
     return {
-      user: userFromItem(resp.Item)
-    }
-  } catch(error) {
-    console.log('Error retrieving user')
-    console.log(error)
+      data: userFromItem(resp.Item),
+    };
+  } catch (error) {
+    console.log("Error retrieving user");
+    console.log(error);
     return {
-      error: 'Could not retrieve user'
-    }
+      error: "Could not retrieve user",
+    };
   }
 }
