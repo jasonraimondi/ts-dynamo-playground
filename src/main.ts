@@ -12,11 +12,9 @@ import { getOAuthClient } from "~/oauth/getOAuthClient";
 const sleep = (s) => new Promise(resolve => setTimeout(resolve, s * 1000));
 
 (async () => {
-  await createTable();
-  console.log("sleeping...");
-  setInterval(() => console.log("foo"), 1000)
-
-  await sleep(20);
+  // await createTable();
+  // console.log("sleeping...");
+  // await sleep(20);
 
   await createUser(
     new User({ email: "jason@examaple.com", username: "jasonraimondi", name: "Jason Raimondi" }),
@@ -28,6 +26,7 @@ const sleep = (s) => new Promise(resolve => setTimeout(resolve, s * 1000));
   );
 
   await sleep(5);
+
 
   let start = Date.now();
   console.log(await getUser("jasonraimondi"));
